@@ -1,8 +1,10 @@
 @import "tailwindcss";
+@source "../components/**/*.tsx";
+@source "../app/**/*.tsx";
 
 @theme {
   --font-display: var(--font-montserrat);
-  --font-sans: var(--font-lato);
+  --font-body: var(--font-lato);
 
   --color-zapp-ink: #1C1B20;
   --color-volt: #6246EA;
@@ -21,7 +23,7 @@
 
   body {
     @apply bg-white text-zapp-ink antialiased;
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
   }
 
   h1, h2, h3, h4, h5, h6 {
