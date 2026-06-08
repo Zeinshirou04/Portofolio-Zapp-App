@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${lato.variable}`}>
-      <body>
+      <body suppressHydrationWarning>
         <Navbar />
         <main className="">{children}</main>
         <Footer />
