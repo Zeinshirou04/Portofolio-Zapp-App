@@ -29,9 +29,9 @@ function ProjectCard({ project }: { project: Project }) {
 
           {/* Cover image */}
           <div className="aspect-video bg-gray-50 dark:bg-zinc-800 relative">
-            {project.cover_image ? (
+            {project.cover_image_url ? (
               <Image
-                src={project.cover_image}
+                src={project.cover_image_url}
                 alt={project.title}
                 fill
                 className="object-cover"

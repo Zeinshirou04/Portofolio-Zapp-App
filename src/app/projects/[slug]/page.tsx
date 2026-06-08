@@ -15,9 +15,9 @@ export default async function ProjectDetailPage({
 
   return (
     <main className="bg-white dark:bg-zinc-900 min-h-screen pt-16">
-      {project.cover_image && (
+      {project.cover_image_url && (
         <div className="relative w-full h-64 md:h-96 bg-gray-100 dark:bg-zinc-800 overflow-hidden">
-          <Image src={project.cover_image} alt={project.title}
+          <Image src={project.cover_image_url} alt={project.title}
             fill priority className="object-cover" sizes="100vw" />
           <div className="absolute inset-0 bg-linear-to-t from-white/80 dark:from-zinc-900/80 via-transparent to-transparent" />
         </div>
