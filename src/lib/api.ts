@@ -23,6 +23,7 @@ export interface ProjectImage {
   id: number
   path: string
   caption: string | null
+  type: 'screenshot' | 'certificate'
   sort_order: number
 }
 
