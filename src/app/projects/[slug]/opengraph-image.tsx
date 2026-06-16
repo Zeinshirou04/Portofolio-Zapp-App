@@ -3,6 +3,8 @@
 // Satori renders it server-side at request time (or statically if generateStaticParams is used).
 
 import { ImageResponse } from "next/og";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 // export const runtime = 'edge'
 export const alt = "Project — Zapp Portfolio";
@@ -51,12 +53,14 @@ let fontRegular: ArrayBuffer | null = null;
 
 async function getFonts() {
   if (!fontBold || !fontRegular) {
-    [fontBold, fontRegular] = await Promise.all([
-      fetch("https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM73w9aXp-p7K4KLg.ttf").then((r) => r.arrayBuffer()),
-      fetch("https://fonts.gstatic.com/s/montserrat/v29/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw9aXp-p7K4KLg.ttf").then((r) => r.arrayBuffer()),
-    ])
+    fontRegular = readFileSync(
+      join(process.cwd(), "public/fonts/Montserrat-Regular.ttf"),
+    ).buffer as ArrayBuffer;
+    fontBold = readFileSync(
+      join(process.cwd(), "public/fonts/Montserrat-Bold.ttf"),
+    ).buffer as ArrayBuffer;
   }
-  return { fontBold: fontBold!, fontRegular: fontRegular! }
+  return { fontBold: fontBold!, fontRegular: fontRegular! };
 }
 
 export default async function Image({
