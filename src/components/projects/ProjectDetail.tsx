@@ -3,6 +3,7 @@
 import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -233,6 +234,32 @@ function CertificateGallery({ images }: { images: Project["images"] }) {
   );
 }
 
+function BackButton() {
+  const router = useRouter();
+
+  const handleBack = () => {
+    const referrer = document.referrer;
+    if (referrer && referrer.includes("zapp.web.id")) {
+      window.location.href = referrer;
+    } else {
+      router.push("/projects");
+    }
+  };
+
+  return (
+    <button
+      onClick={handleBack}
+      className="inline-flex items-center gap-2 font-sans text-sm
+                 text-gray-400 dark:text-gray-500
+                 hover:text-volt dark:hover:text-volt-light
+                 transition-colors mb-8"
+    >
+      <FontAwesomeIcon icon={faArrowLeft} className="h-3 w-3" />
+      Back
+    </button>
+  );
+}
+
 export default function ProjectDetail({ project }: { project: Project }) {
   const period = project.started_at
     ? `${formatDate(project.started_at)} — ${project.ended_at ? formatDate(project.ended_at) : "Present"}`
@@ -240,18 +267,9 @@ export default function ProjectDetail({ project }: { project: Project }) {
 
   return (
     <>
-      {/* Back link */}
+      {/* Back button */}
       <motion.div variants={fadeUp} initial="hidden" animate="visible">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 font-sans text-sm
-                     text-gray-400 dark:text-gray-500
-                     hover:text-volt dark:hover:text-volt-light
-                     transition-colors mb-8"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} className="h-3 w-3" />
-          All projects
-        </Link>
+        <BackButton />
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
