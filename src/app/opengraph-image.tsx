@@ -10,16 +10,17 @@ import { join } from "path";
 let fontBold: ArrayBuffer | null = null;
 let fontRegular: ArrayBuffer | null = null;
 
+function readFont(filename: string): ArrayBuffer {
+  const buf = readFileSync(join(process.cwd(), 'public/fonts', filename))
+  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
+}
+
 async function getFonts() {
   if (!fontBold || !fontRegular) {
-    fontRegular = readFileSync(
-      join(process.cwd(), "public/fonts/Montserrat-Regular.ttf"),
-    ).buffer as ArrayBuffer;
-    fontBold = readFileSync(
-      join(process.cwd(), "public/fonts/Montserrat-Bold.ttf"),
-    ).buffer as ArrayBuffer;
+    fontRegular = readFont('Montserrat-Regular.ttf')
+    fontBold = readFont('Montserrat-Bold.ttf')
   }
-  return { fontBold: fontBold!, fontRegular: fontRegular! };
+  return { fontBold: fontBold!, fontRegular: fontRegular! }
 }
 
 // export const runtime = 'edge'
