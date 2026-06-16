@@ -11,11 +11,11 @@ let fontRegular: ArrayBuffer | null = null;
 async function getFonts() {
   if (!fontBold || !fontRegular) {
     [fontBold, fontRegular] = await Promise.all([
-      fetch("https://...bold.woff").then((r) => r.arrayBuffer()),
-      fetch("https://...regular.woff").then((r) => r.arrayBuffer()),
-    ]);
+      fetch("https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM73w5aXp-p7K4KLg.woff").then((r) => r.arrayBuffer()),
+      fetch("https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXp-p7K4KLg.woff").then((r) => r.arrayBuffer()),
+    ])
   }
-  return { fontBold: fontBold!, fontRegular: fontRegular! };
+  return { fontBold: fontBold!, fontRegular: fontRegular! }
 }
 
 // export const runtime = 'edge'
