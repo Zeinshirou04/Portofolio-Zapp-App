@@ -51,18 +51,18 @@ function typeLabel(type: string): string {
 let fontBold: ArrayBuffer | null = null;
 let fontRegular: ArrayBuffer | null = null;
 
-async function getFonts() {
-  if (!fontBold || !fontRegular) {
-    fontRegular = readFileSync(
-      join(process.cwd(), "public/fonts/Montserrat-Regular.ttf"),
-    ).buffer as ArrayBuffer;
-    fontBold = readFileSync(
-      join(process.cwd(), "public/fonts/Montserrat-Bold.ttf"),
-    ).buffer as ArrayBuffer;
-  }
-  return { fontBold: fontBold!, fontRegular: fontRegular! };
+function readFont(filename: string): ArrayBuffer {
+  const buf = readFileSync(join(process.cwd(), 'public/fonts', filename))
+  return buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer
 }
 
+async function getFonts() {
+  if (!fontBold || !fontRegular) {
+    fontRegular = readFont('Montserrat-Regular.ttf')
+    fontBold = readFont('Montserrat-Bold.ttf')
+  }
+  return { fontBold: fontBold!, fontRegular: fontRegular! }
+}
 export default async function Image({
   params,
 }: {
