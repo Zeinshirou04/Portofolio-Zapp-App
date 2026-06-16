@@ -50,12 +50,12 @@ export default function Contact() {
           <motion.div
             variants={fadeUp}
             className="flex flex-col sm:flex-row gap-6">
-            <a href="mailto:hello@zapp.web.id"
+            <a href="mailto:farras.ff6@gmail.com"
               className="flex items-center gap-3
                          font-sans text-sm text-white/70 hover:text-white
                          transition-colors">
               <FontAwesomeIcon icon={faEnvelope} className="h-4 w-4 text-volt-light" />
-              hello@zapp.web.id
+              Farras.FF6@gmail.com
             </a>
             <a href="https://wa.me/6285183266907"
               target="_blank" rel="noopener noreferrer"
