@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faArrowUpRightFromSquare, faBars, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -46,6 +46,19 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
+
+          {/* Zapp main site link */}
+          <a
+            href="https://zapp.web.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 font-sans text-sm
+                       text-gray-600 dark:text-white/60
+                       hover:text-gray-900 dark:hover:text-white
+                       transition-colors">
+            Zapp
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="h-2.5 w-2.5" />
+          </a>
         </div>
 
         {/* CTA */}
@@ -83,6 +96,19 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
+
+            {/* Zapp main site link — mobile */}
+            <a
+              href="https://zapp.web.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="inline-flex items-center gap-1.5 font-sans text-sm
+                         text-gray-600 dark:text-white/60 transition-colors">
+              Zapp
+              <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="h-2.5 w-2.5" />
+            </a>
+
             <Link href="/#contact"
               onClick={() => setMenuOpen(false)}
               className="inline-flex items-center gap-2

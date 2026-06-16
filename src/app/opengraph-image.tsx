@@ -4,20 +4,27 @@
 
 import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge'
+// Load fonts
+let fontBold: ArrayBuffer | null = null;
+let fontRegular: ArrayBuffer | null = null;
+
+async function getFonts() {
+  if (!fontBold || !fontRegular) {
+    [fontBold, fontRegular] = await Promise.all([
+      fetch("https://...bold.woff").then((r) => r.arrayBuffer()),
+      fetch("https://...regular.woff").then((r) => r.arrayBuffer()),
+    ]);
+  }
+  return { fontBold: fontBold!, fontRegular: fontRegular! };
+}
+
+// export const runtime = 'edge'
 export const alt = 'Farras Adhani Zayn — Full Stack Web Developer'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 export default async function Image() {
-  // Load Montserrat Bold from Google Fonts (used for display text)
-  const montserratBold = await fetch(
-    'https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM73w5aXp-p7K4KLg.woff',
-  ).then((res) => res.arrayBuffer())
-
-  const montserratRegular = await fetch(
-    'https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXp-p7K4KLg.woff',
-  ).then((res) => res.arrayBuffer())
+  const { fontBold, fontRegular } = await getFonts();
 
   return new ImageResponse(
     (
@@ -180,8 +187,8 @@ export default async function Image() {
     {
       ...size,
       fonts: [
-        { name: 'Montserrat', data: montserratRegular, weight: 400 },
-        { name: 'Montserrat', data: montserratBold, weight: 700 },
+        { name: 'Montserrat', data: fontRegular, weight: 400 },
+        { name: 'Montserrat', data: fontBold, weight: 700 },
       ],
     },
   )
