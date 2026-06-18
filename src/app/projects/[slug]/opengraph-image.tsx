@@ -58,8 +58,8 @@ function readFont(filename: string): ArrayBuffer {
 
 async function getFonts() {
   if (!fontBold || !fontRegular) {
-    fontRegular = readFont('Montserrat-Regular.ttf')
-    fontBold = readFont('Montserrat-Bold.ttf')
+    fontRegular = readFont('Inter-Regular.ttf')
+    fontBold = readFont('Inter-Bold.ttf')
   }
   return { fontBold: fontBold!, fontRegular: fontRegular! }
 }
@@ -91,7 +91,7 @@ export default async function Image({
         height: "630px",
         backgroundColor: "#1C1B20",
         padding: "72px 80px",
-        fontFamily: "Montserrat",
+        fontFamily: "Inter",
         position: "relative",
         overflow: "hidden",
       }}
@@ -244,8 +244,8 @@ export default async function Image({
     {
       ...size,
       fonts: [
-        { name: "Montserrat", data: fontRegular, weight: 400 },
-        { name: "Montserrat", data: fontBold, weight: 700 },
+        { name: "Inter", data: fontRegular, weight: 400 },
+        { name: "Inter", data: fontBold, weight: 700 },
       ],
     },
   );
