@@ -3,8 +3,22 @@ import { getProjects } from '@/lib/api'
 import ProjectsGrid from '@/components/projects/ProjectsGrid'
 
 export const metadata: Metadata = {
-  title: 'Projects — Zayn',
-  description: 'A collection of projects I have built — web apps, APIs, dashboards, and more.',
+  title: "Projects",
+  description: "A collection of projects I have built — web apps, APIs, dashboards, and more.",
+  alternates: {
+    canonical: "https://portfolio.zapp.web.id/projects",
+  },
+  openGraph: {
+    title: "Projects | Zayn",
+    description: "A collection of projects I have built — web apps, APIs, dashboards, and more.",
+    url: "https://portfolio.zapp.web.id/projects",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects | Zayn",
+    description: "A collection of projects I have built — web apps, APIs, dashboards, and more.",
+  },
 }
 
 export default async function ProjectsPage() {
