@@ -66,12 +66,12 @@ function ProjectCard({ project }: { project: Project }) {
             {project.stack?.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-5">
                 {project.stack.slice(0, 4).map((tech) => (
-                  <span key={tech}
+                  <span key={tech.name}
                     className="font-sans text-xs px-2.5 py-1 rounded-md
                                bg-gray-50 dark:bg-zinc-800
                                border border-gray-100 dark:border-zinc-700
                                text-gray-500 dark:text-gray-400">
-                    {tech}
+                    {tech.name}
                   </span>
                 ))}
                 {project.stack.length > 4 && (
