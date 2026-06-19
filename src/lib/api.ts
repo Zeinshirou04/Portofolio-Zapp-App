@@ -1,13 +1,16 @@
 const API_BASE = process.env.API_BASE_URL!
 const API_TOKEN = process.env.API_SECRET_KEY!
 
-async function apiFetch<T>(path: string): Promise<T> {
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
     headers: {
       Authorization: `Bearer ${API_TOKEN}`,
       Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(options?.headers ?? {}),
     },
-    next: { revalidate: 60 },
+    next: options?.method && options.method !== 'GET' ? undefined : { revalidate: 60 },
   })
 
   if (!res.ok) {
@@ -19,11 +22,16 @@ async function apiFetch<T>(path: string): Promise<T> {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+export interface StackItem {
+  name: string
+  version: string
+}
+
 export interface ProjectImage {
   id: number
   path: string
   caption: string | null
-  type: 'screenshot' | 'certificate'
+  type: 'screenshot' | 'certificate' | 'documentary' | 'other'
   sort_order: number
 }
 
@@ -40,21 +48,36 @@ export interface ProjectContributor {
   role: string
 }
 
+export interface ProjectLink {
+  id: number
+  label: string
+  url: string
+  type: 'repo' | 'site' | 'video' | 'doc' | 'other'
+  sort_order: number
+}
+
 export interface Project {
   id: number
   title: string
   slug: string
   type: string
   brief: string
-  stack: string[]
+  stack: StackItem[]
   cover_image_url: string | null
   earning: string
   is_maintained: boolean
   started_at: string
   ended_at: string | null
+  likes_count: number
   images?: ProjectImage[]
   timelines?: ProjectTimeline[]
   contributors?: ProjectContributor[]
+  links?: ProjectLink[]
+}
+
+export interface LikeResponse {
+  likes_count: number
+  liked: boolean
 }
 
 export interface Service {
@@ -85,6 +108,25 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProject(slug: string): Promise<Project> {
   const res = await apiFetch<{ data: Project }>(`/api/projects/${slug}`)
   return res.data
+}
+
+export async function getLikeStatus(slug: string): Promise<LikeResponse> {
+  const res = await apiFetch<LikeResponse>(`/api/projects/${slug}/like`)
+  return res
+}
+
+export async function likeProject(slug: string): Promise<LikeResponse> {
+  const res = await apiFetch<LikeResponse>(`/api/projects/${slug}/like`, {
+    method: 'POST',
+  })
+  return res
+}
+
+export async function unlikeProject(slug: string): Promise<LikeResponse> {
+  const res = await apiFetch<LikeResponse>(`/api/projects/${slug}/like`, {
+    method: 'DELETE',
+  })
+  return res
 }
 
 export async function getServices(): Promise<Service[]> {
