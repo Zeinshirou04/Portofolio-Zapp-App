@@ -13,7 +13,10 @@ import {
   faUsers,
   faWrench,
 } from "@fortawesome/free-solid-svg-icons";
-import type { Project } from "@/lib/api";
+import type { Project, StackItem } from "@/lib/api";
+import ProjectLinks from "./ProjectLinks";
+import ProjectEmbeds from "./ProjectEmbeds";
+import ProjectLikes from "./ProjectLikes";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -33,15 +36,20 @@ function formatDate(dateStr: string | null): string {
   });
 }
 
-function StackPill({ tech }: { tech: string }) {
+function StackPill({ item }: { item: StackItem }) {
   return (
     <span
-      className="inline-block font-sans text-xs font-semibold
-                     bg-gray-100 dark:bg-zinc-800
-                     text-gray-700 dark:text-gray-300
-                     px-3 py-1 rounded-lg"
+      className="inline-flex items-center gap-1.5 font-sans text-xs font-semibold
+                   bg-gray-100 dark:bg-zinc-800
+                   text-gray-700 dark:text-gray-300
+                   px-3 py-1 rounded-lg"
     >
-      {tech}
+      {item.name}
+      {item.version && (
+        <span className="text-gray-400 dark:text-gray-500 font-normal">
+          {item.version}
+        </span>
+      )}
     </span>
   );
 }
@@ -185,6 +193,51 @@ function ScreenshotGallery({ images }: { images: Project["images"] }) {
   );
 }
 
+function DocumentaryGallery({ images }: { images: Project["images"] }) {
+  const docs = images?.filter((img) => img.type === "documentary") ?? [];
+  if (docs.length === 0) return null;
+  return (
+    <div>
+      <h2 className="font-display font-bold text-xl text-gray-900 dark:text-gray-100 mb-6">
+        Documentary
+      </h2>
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+      >
+        {docs.map((img) => (
+          <motion.div
+            key={img.id}
+            variants={fadeUp}
+            className="group relative overflow-hidden rounded-xl
+                       border border-gray-100 dark:border-zinc-800
+                       bg-gray-50 dark:bg-zinc-900 aspect-video"
+          >
+            <Image
+              src={img.path}
+              alt={img.caption ?? "Documentary photo"}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              sizes="(max-width: 640px) 100vw, 50vw"
+            />
+            {img.caption && (
+              <div
+                className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/60 to-transparent
+                              px-4 py-3 translate-y-full group-hover:translate-y-0 transition-transform duration-200"
+              >
+                <p className="font-sans text-xs text-white/90">{img.caption}</p>
+              </div>
+            )}
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
 function CertificateGallery({ images }: { images: Project["images"] }) {
   const certs = images?.filter((img) => img.type === "certificate") ?? [];
   if (certs.length === 0) return null;
@@ -273,7 +326,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
-        {/* Left */}
+        {/* Left — main content */}
         <div className="lg:col-span-2 space-y-12">
           <motion.div variants={fadeUp} initial="hidden" animate="visible">
             <span className="text-xs font-sans font-semibold tracking-widest uppercase text-volt">
@@ -291,12 +344,24 @@ export default function ProjectDetail({ project }: { project: Project }) {
             </p>
             {project.stack && project.stack.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-6">
-                {project.stack.map((tech: string) => (
-                  <StackPill key={tech} tech={tech} />
+                {project.stack.map((item: StackItem) => (
+                  <StackPill key={item.name} item={item} />
                 ))}
               </div>
             )}
           </motion.div>
+
+          {/* Embeds — YouTube & Google Drive PDF */}
+          {project.links && project.links.length > 0 && (
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <ProjectEmbeds links={project.links} />
+            </motion.div>
+          )}
 
           <motion.div
             variants={fadeUp}
@@ -305,6 +370,15 @@ export default function ProjectDetail({ project }: { project: Project }) {
             viewport={{ once: true }}
           >
             <ScreenshotGallery images={project.images} />
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <DocumentaryGallery images={project.images} />
           </motion.div>
 
           <motion.div
@@ -334,16 +408,13 @@ export default function ProjectDetail({ project }: { project: Project }) {
             animate="visible"
             className="sticky top-24 space-y-8"
           >
+            {/* Meta card */}
             <motion.div
               variants={fadeUp}
               className="bg-gray-50 dark:bg-zinc-800/60 border border-gray-100 dark:border-zinc-700 rounded-xl p-6 space-y-5"
             >
               <MetaItem icon={faCalendar} label="Period" value={period} />
-              <MetaItem
-                icon={faCode}
-                label="Type"
-                value={project.type ?? "—"}
-              />
+              <MetaItem icon={faCode} label="Type" value={project.type ?? "—"} />
               {project.is_maintained && (
                 <MetaItem
                   icon={faWrench}
@@ -360,10 +431,25 @@ export default function ProjectDetail({ project }: { project: Project }) {
               )}
             </motion.div>
 
+            {/* Links */}
+            <motion.div variants={fadeUp}>
+              <ProjectLinks links={project.links} />
+            </motion.div>
+
+            {/* Contributors */}
             <motion.div variants={fadeUp}>
               <Contributors contributors={project.contributors} />
             </motion.div>
 
+            {/* Like button */}
+            <motion.div variants={fadeUp} className="flex justify-center pt-2">
+              <ProjectLikes
+                slug={project.slug}
+                initialCount={project.likes_count}
+              />
+            </motion.div>
+
+            {/* CTA */}
             <motion.div variants={fadeUp}>
               <Link
                 href="/#contact"
