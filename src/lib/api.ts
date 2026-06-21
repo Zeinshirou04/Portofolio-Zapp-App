@@ -111,22 +111,18 @@ export async function getProject(slug: string): Promise<Project> {
 }
 
 export async function getLikeStatus(slug: string): Promise<LikeResponse> {
-  const res = await apiFetch<LikeResponse>(`/api/projects/${slug}/like`)
-  return res
+  const res = await fetch(`/api/projects/${slug}/like`)
+  return res.json()
 }
 
 export async function likeProject(slug: string): Promise<LikeResponse> {
-  const res = await apiFetch<LikeResponse>(`/api/projects/${slug}/like`, {
-    method: 'POST',
-  })
-  return res
+  const res = await fetch(`/api/projects/${slug}/like`, { method: 'POST' })
+  return res.json()
 }
 
 export async function unlikeProject(slug: string): Promise<LikeResponse> {
-  const res = await apiFetch<LikeResponse>(`/api/projects/${slug}/like`, {
-    method: 'DELETE',
-  })
-  return res
+  const res = await fetch(`/api/projects/${slug}/like`, { method: 'DELETE' })
+  return res.json()
 }
 
 export async function getServices(): Promise<Service[]> {
