@@ -98,6 +98,24 @@ export interface Testimonial {
   quote: string
 }
 
+export interface SocialLinks {
+  github?: string
+  linkedin?: string
+  instagram?: string
+  [key: string]: string | undefined
+}
+
+export interface Profile {
+  name: string
+  job_title: string
+  bio: string
+  display_mode: 'avatar' | 'portrait'
+  avatar_url: string | null
+  portrait_url: string | null
+  cv_url: string | null
+  social_links: SocialLinks
+}
+
 // ─── Fetchers ─────────────────────────────────────────────────────────────────
 
 export async function getProjects(): Promise<Project[]> {
@@ -132,5 +150,10 @@ export async function getServices(): Promise<Service[]> {
 
 export async function getTestimonials(): Promise<Testimonial[]> {
   const res = await apiFetch<{ data: Testimonial[] }>('/api/testimonials')
+  return res.data
+}
+
+export async function getProfile(): Promise<Profile> {
+  const res = await apiFetch<{ data: Profile }>('/api/profile')
   return res.data
 }
