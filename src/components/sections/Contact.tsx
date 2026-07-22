@@ -50,7 +50,7 @@ export default function Contact() {
           <motion.div
             variants={fadeUp}
             className="flex flex-col sm:flex-row gap-6">
-            <a href="mailto:farras.ff6@gmail.com"
+            <a href="mailto:business.zappdev@gmail.com"
               className="flex items-center gap-3
                          font-sans text-sm text-white/70 hover:text-white
                          transition-colors">
