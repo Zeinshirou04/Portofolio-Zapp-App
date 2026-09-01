@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://zapp.web.id/sitemap.xml',
+    sitemap: 'https://portofolio.zapp.web.id/sitemap.xml',
   }
 }
