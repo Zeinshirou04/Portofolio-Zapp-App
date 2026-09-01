@@ -55,9 +55,9 @@ export default function Contact() {
                          font-sans text-sm text-white/70 hover:text-white
                          transition-colors">
               <FontAwesomeIcon icon={faEnvelope} className="h-4 w-4 text-volt-light" />
-              Farras.FF6@gmail.com
+              business.zappdev@gmail.com
             </a>
-            <a href="https://wa.me/6285183266907"
+            <a href="https://wa.me/6285752657965"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-3
                          font-sans text-sm text-white/70 hover:text-white
